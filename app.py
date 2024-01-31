@@ -10,7 +10,7 @@ CORS(app)  # Enable CORS for all routes
 def generate_text():
     input_text = request.json.get('text')
     response = requests.post(
-        "https://api-inference.huggingface.co/models/MwangiNelson/NutriBot",
+        "https://api-inference.huggingface.co/models/MwangiNelson/RevisedNutribot",
         headers={"Authorization": "Bearer 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"},
         json={"inputs": input_text, "parameters": {"max_length": 50}}
     )
