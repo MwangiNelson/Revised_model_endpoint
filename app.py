@@ -12,7 +12,7 @@ def generate_text():
     response = requests.post(
         "https://api-inference.huggingface.co/models/MwangiNelson/RevisedNutribot",
         headers={"Authorization": "Bearer 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"},
-        json={"inputs": input_text, "parameters": {"max_length": 50}}
+        json={"inputs": input_text, "parameters": {"max_length": 45,"temperature":0.4}}
     )
     if response.status_code == 200:
         return jsonify(response.json()[0]['generated_text'])
