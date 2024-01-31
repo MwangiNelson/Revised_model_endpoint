@@ -21,11 +21,11 @@ def extractResponse(input_output_string):
 
         # Skip sequences starting with "[I]"
         if not cleaned_input.startswith("[I]"):
-            cleaned_text.append((cleaned_input, cleaned_output))
+            cleaned_text.append(cleaned_output)
 
-    # Create a JSON-formatted string
-    json_string = ', '.join([f'"{input_line}", "{output_line}"' for input_line, output_line in cleaned_text])
-    return f"[{json_string}]"
+    # Concatenate the cleaned output lines
+    concatenated_output = ' '.join(cleaned_text)
+    return concatenated_output
 
 @app.route('/generate-text', methods=['POST'])
 def generate_text():
