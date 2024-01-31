@@ -2,23 +2,30 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import os
+import re
 
 app = Flask(__name__)
 CORS(app)
 
 def extractResponse(input_output_string):
     pairs = input_output_string.strip().split('\n')
-    transformed_string = ""
+    cleaned_text = []
 
     for i in range(0, len(pairs)-1, 2):
         input_line = pairs[i].strip()[4:]  # Skip "[I]: " prefix
         output_line = pairs[i+1].strip()[4:]  # Skip "[O]: " prefix
-        transformed_string += f'"{input_line}", "{output_line}", '
 
-    # Remove the trailing comma and space
-    transformed_string = transformed_string[:-2]
+        # Remove unnecessary punctuations
+        cleaned_input = re.sub(r'[^\w\s]', '', input_line)
+        cleaned_output = re.sub(r'[^\w\s]', '', output_line)
 
-    return f"[{transformed_string}]"
+        # Skip sequences starting with "[I]"
+        if not cleaned_input.startswith("[I]"):
+            cleaned_text.append((cleaned_input, cleaned_output))
+
+    # Create a JSON-formatted string
+    json_string = ', '.join([f'"{input_line}", "{output_line}"' for input_line, output_line in cleaned_text])
+    return f"[{json_string}]"
 
 @app.route('/generate-text', methods=['POST'])
 def generate_text():
