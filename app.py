@@ -25,7 +25,7 @@ def extractResponse(input_output_string):
 
     # Concatenate the cleaned output lines
     concatenated_output = ' '.join(cleaned_text)
-    return concatenated_output
+    return f"[{concatenated_output}]"
 
 @app.route('/generate-text', methods=['POST'])
 def generate_text():
